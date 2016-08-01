@@ -3,16 +3,19 @@ package client;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 import metier.Message;
 
 public class Client {
 
+	private static Logger LOGGER = Logger.getLogger(Client.class.getName());
+	
 	private static String host = "localhost";
 	private static int port = 7030;
 	
 	public static void main(String[] args) {
-		System.err.println("CLIENT");
+		LOGGER.info("Lancement du client");
 		
 		Message M = new Message("Jerome", "Hello World !");
 		try {
