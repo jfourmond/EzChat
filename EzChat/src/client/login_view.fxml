@@ -13,9 +13,9 @@
 		<Insets top="25" right="25" bottom="10" left="25"/>
 	</padding>
 
-	<Label text="Username :" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+	<Label text="User :" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
  
-	<TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+	<TextField fx:id="userField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
  
 	<Label text="Host : " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
  

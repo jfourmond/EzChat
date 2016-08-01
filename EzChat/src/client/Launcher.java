@@ -12,6 +12,7 @@ public class Launcher extends Application {
 	}
 	
 	public static void main(String[] args) {
+		ClientLog.info("Lancement du client.");
 		launch(args);
 	}
 }

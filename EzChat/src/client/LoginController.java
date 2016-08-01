@@ -1,5 +1,8 @@
 package client;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -9,7 +12,7 @@ import javafx.stage.Stage;
 public class LoginController {
 	private Stage stage;
 	
-	@FXML private TextField usernameField;
+	@FXML private TextField userField;
 	@FXML private TextField hostField;
 	@FXML private TextField portField;
 	@FXML private Text info;
@@ -23,6 +26,21 @@ public class LoginController {
 	//	METHODES
 	@FXML
 	protected void connect(ActionEvent event) {
-		System.out.println("Connect pressed");
+		Client client;
+		
+		String user = userField.getText();
+		String host = hostField.getText();
+		String port = portField.getText();
+		
+		ClientLog.info("Tentative de connection : " + user + " sur " + host + ":" + port);
+		
+		try {
+			client = new Client(user, host, port);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		stage.close();
 	}
 }
