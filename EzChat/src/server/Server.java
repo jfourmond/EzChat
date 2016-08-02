@@ -21,9 +21,10 @@ public class Server {
 		ObjectInputStream ois = new ObjectInputStream(is);
 		
 		Message M = (Message)ois.readObject();
-		if (M !=null )
+		if (M !=null ) {
+			ServerLog.info("Réception d'un message");
 			System.out.println(M);
-		else
+		}else
 			System.out.println((String)ois.readObject());
 		
 		is.close();

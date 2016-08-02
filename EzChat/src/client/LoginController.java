@@ -1,10 +1,9 @@
 package client;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -36,8 +35,18 @@ public class LoginController {
 		
 		try {
 			client = new Client(user, host, port);
+			// TODO Connection et fenêtre de conversation serveur
+			new CommunicationStage(client);
+			stage.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Erreur de connexion");
+			alert.setHeaderText("La requête de connexion n'a pas pu aboutir.");
+			alert.setContentText(e.getMessage());
+
+			alert.showAndWait();
+			ClientLog.severe("Erreur de connexion : " + e.getMessage());
 			return;
 		}
 		

@@ -23,5 +23,4 @@ public class LoginStage extends Stage {
 		setScene(scene);
 		show();
 	}
-	
 }
