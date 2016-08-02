@@ -1,34 +1,28 @@
 package server;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import metier.Message;
-
 public class Server {
-	private static String host;
 	private static int port = 7030;
 	
+	private static boolean launch;
+	
 	public static void main(String[] args) throws Exception {
-		ServerLog.info("Lancement du serveur");
+		InetAddress ad = InetAddress.getLocalHost();
+		ServerLog.info("Lancement du serveur : " + ad);
+		
+		launch = true;
 		
 		ServerSocket server = new ServerSocket(port);
-		Socket socket = server.accept();
 		
-		InputStream is = socket.getInputStream();
-		ObjectInputStream ois = new ObjectInputStream(is);
+		while(launch) {	// TODO stopper la boucle
+			Socket socket = server.accept();
+			DialogThread dt = new DialogThread(socket);
+			dt.start();
+		}
 		
-		Message M = (Message)ois.readObject();
-		if (M !=null ) {
-			ServerLog.info("Réception d'un message");
-			System.out.println(M);
-		}else
-			System.out.println((String)ois.readObject());
-		
-		is.close();
-		socket.close();
 		server.close();
 		
 		ServerLog.info("Arrêt du serveur");
