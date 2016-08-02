@@ -4,19 +4,15 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Logger;
 
 import metier.Message;
 
 public class Server {
-
-	private static Logger LOGGER = Logger.getLogger(Server.class.getName());
-	
-	static String host;
-	static int port = 7030;
+	private static String host;
+	private static int port = 7030;
 	
 	public static void main(String[] args) throws Exception {
-		LOGGER.info("Lancement du serveur");
+		ServerLog.info("Lancement du serveur");
 		
 		ServerSocket server = new ServerSocket(port);
 		Socket socket = server.accept();
@@ -33,6 +29,8 @@ public class Server {
 		is.close();
 		socket.close();
 		server.close();
+		
+		ServerLog.info("Arrêt du serveur");
 	}
 
 }
