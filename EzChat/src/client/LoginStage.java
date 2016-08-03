@@ -1,6 +1,8 @@
 package client;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,8 +12,11 @@ import javafx.stage.Stage;
 public class LoginStage extends Stage {
 	private final static String title = "EzChat - Login";
 	
-	public LoginStage() throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("login_view.fxml"));
+	public LoginStage() throws IOException { 
+		URL fxml = getClass().getResource("login_view.fxml");  
+		ResourceBundle bundle = ResourceBundle.getBundle("client.string_fr"); 
+		
+		FXMLLoader loader = new FXMLLoader(fxml, bundle);
 		Parent root = (Parent)loader.load();
 		
 		LoginController controller = (LoginController)loader.getController();

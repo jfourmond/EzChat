@@ -16,19 +16,32 @@
 	
 	<children>
 	
-		<JFXTextField fx:id="userField" labelFloat="true" promptText="Username" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+		<JFXTextField fx:id="userField" labelFloat="true" promptText="%key.username" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 	
-		<JFXTextField fx:id="hostField" labelFloat="true" promptText="Host" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+		<JFXTextField fx:id="hostField" labelFloat="true" promptText="%key.host" GridPane.columnIndex="0" GridPane.rowIndex="2" />
 	
-		<JFXTextField fx:id="portField" promptText="Port" text="7030" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+		<JFXTextField fx:id="portField" promptText="%key.port" text="7030" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 	
 		<HBox alignment="bottom_right" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="5">
 			<children>
-				<JFXButton alignment="CENTER" buttonType="RAISED" onAction="#connect" style="-fx-font-size: 14px; -fx-button-type: RAISED; -fx-background-color: rgb(77,102,204); -fx-text-fill: WHITE;" text="Connect" textAlignment="CENTER" wrapText="true" />
+				<JFXButton alignment="CENTER" buttonType="RAISED" onAction="#connect" style="-fx-font-size: 14px; -fx-button-type: RAISED; -fx-background-color: rgb(77,102,204); -fx-text-fill: WHITE;" text="%key.connect" textAlignment="CENTER" wrapText="true" />
 			</children>
 		</HBox>
 	
 		<Text fx:id="info" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 	</children>
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
 
 </GridPane>
