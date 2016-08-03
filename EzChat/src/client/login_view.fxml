@@ -28,20 +28,11 @@
 			</children>
 		</HBox>
 	
-		<Text fx:id="info" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+		<Text fx:id="info" GridPane.columnIndex="0" GridPane.rowIndex="6" />
 	</children>
-   <columnConstraints>
-      <ColumnConstraints />
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
+
+	<stylesheets>
+		<URL value="@login.css" />
+	</stylesheets>
 
 </GridPane>
