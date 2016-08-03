@@ -17,7 +17,7 @@ public class LoginStage extends Stage {
 		LoginController controller = (LoginController)loader.getController();
 		controller.setStage(this);
 		
-		Scene scene = new Scene(root, 300, 200);
+		Scene scene = new Scene(root, 300.0 ,240.0);
 		
 		setTitle(title);
 		setScene(scene);
