@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class LoginStage extends Stage {
 	private final static String title = "EzChat - Login";
@@ -23,6 +25,13 @@ public class LoginStage extends Stage {
 		controller.setStage(this);
 		
 		Scene scene = new Scene(root, 300.0 ,240.0);
+		
+		setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				ClientLog.info("Fermeture de l'interface de Login");
+			}
+		});
 		
 		setTitle(title);
 		setScene(scene);

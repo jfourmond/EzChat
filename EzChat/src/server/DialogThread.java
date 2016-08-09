@@ -9,7 +9,6 @@ import java.net.Socket;
 import metier.Message;
 
 public class DialogThread extends Thread {
-
 	private Socket socket;
 	
 	private InputStream is;

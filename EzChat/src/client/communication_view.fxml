@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
 <?import com.jfoenix.controls.*?>
 
-<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="client.CommunicationController"  
-	alignment="center" hgap="10" vgap="10">
+<GridPane alignment="center" style="-fx-background-color: WHITE;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="client.CommunicationController">
 	
 	<padding>
-		<Insets top="25" right="25" bottom="10" left="25"/>
+		<Insets bottom="10" left="25" right="25" top="25" />
 	</padding>
-
-	<TextArea fx:id="messageList" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" editable="false" />
-
-	<JFXTextField fx:id="messageField" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3"/>
-
-	<Button text="Send" onAction="#send" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-
-	<Text fx:id="info" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+	<children>
+	
+		<JFXTextArea fx:id="messageList" editable="false" focusColor="#777777" unFocusColor="#777777" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0" />
+	
+		<JFXTextField fx:id="messageField" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" focusTraversable="true"/>
+	
+		<Button onAction="#send" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+	
+		<Text fx:id="info" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+	</children>
 	
 	<stylesheets>
 		<URL value="@communication.css" />
 	</stylesheets>
 	
 </GridPane>
-

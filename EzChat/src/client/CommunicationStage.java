@@ -2,10 +2,12 @@ package client;
 
 import java.io.IOException;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class CommunicationStage extends Stage {
 	private final static String title = "EzChat - Login";
@@ -23,7 +25,14 @@ public class CommunicationStage extends Stage {
 		controller.setStage(this);
 		controller.setClient(this.client);
 		
-		Scene scene = new Scene(root, 300, 200);
+		Scene scene = new Scene(root, 600, 400);
+		
+		setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				ClientLog.info("Fermeture de l'interface de Communication");
+			}
+		});
 		
 		setTitle(title);
 		setScene(scene);
