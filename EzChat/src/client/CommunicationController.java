@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import metier.Message;
@@ -17,7 +17,7 @@ public class CommunicationController extends Thread {
 	private Stage stage;
 	private Client client;
 	
-	@FXML private TextArea messageList;
+	@FXML private JFXTextArea messageList;
 	@FXML private JFXTextField messageField;
 	@FXML private Text info;
 	
@@ -71,6 +71,6 @@ public class CommunicationController extends Thread {
 	}
 	
 	private void append(Message M) {
-		messageList.appendText(M.getAuthor() + " > " + M.getText() + "\n");
+		messageList.appendText(M.getUser() + " > " + M.getText() + "\n");
 	}
 }
