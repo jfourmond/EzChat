@@ -15,12 +15,17 @@
 		<Insets top="25" right="25" bottom="10" left="25"/>
 	</padding>
 
-	<TextArea fx:id="message_list" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" editable="false" />
+	<TextArea fx:id="messageList" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" editable="false" />
 
 	<JFXTextField fx:id="messageField" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3"/>
 
 	<Button text="Send" onAction="#send" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
 
 	<Text fx:id="info" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+	
+	<stylesheets>
+		<URL value="@communication.css" />
+	</stylesheets>
+	
 </GridPane>
 

@@ -1,8 +1,6 @@
 package client;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -10,7 +8,7 @@ import java.net.UnknownHostException;
 
 import metier.Message;
 
-public class Client extends Thread {
+public class Client {
 	private String user;
 	private String host = "localhost";
 	private int port = 7030;
@@ -20,9 +18,6 @@ public class Client extends Thread {
 	private Socket socket;
 	private OutputStream os;
 	private ObjectOutputStream oos;
-	
-	private InputStream is;
-	private ObjectInputStream ois;
 	
 	//	CONSTRUCTEURS
 	public Client(String user, String host, String port) throws UnknownHostException, IOException {
@@ -48,12 +43,20 @@ public class Client extends Thread {
 	
 	public int getPort() { return port; }
 	
+	public Socket getSocket() { return socket; }
+	
+	public boolean isConnected() { return connected; }
+	
 	//	SETTERS
 	public void setUser(String user) { this.user = user; }
 	
 	public void setHost(String host) { this.host = host; }
 	
 	public void setPort(int port) { this.port = port; }
+	
+	public void setSocket(Socket socket) { this.socket = socket; }
+	
+	public void setConnected(boolean connected) { this.connected = connected; }
 	
 	//	METHODES
 	public void connect() throws UnknownHostException, IOException {
@@ -64,46 +67,25 @@ public class Client extends Thread {
 		ClientLog.info("Connexion de " + user + " sur " + host + ":" + port + " réussie.");
 		
 		connected = true;
-		
-		start();
 	}
 	
-	public void send(String msg) throws IOException {
+	public boolean send(String msg) {
 		Message M = new Message(user, msg);
 		
 		System.out.println(M);
 		
-		oos.writeObject(M);
-	}
-	
-	@Override
-	public void run() {
 		try {
-			is = socket.getInputStream();
-			ois = new ObjectInputStream(is);
-			
-			Message M;
-			
-			while(connected) {
-					M = (Message)ois.readObject();
-					
-					if (M != null ) 
-						System.out.println(M);
-					else
-						System.out.println((String)ois.readObject());
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			oos.writeObject(M);
+			return true;
+		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 	
 	public void disconnect() throws IOException {
 		oos.close();
 		os.close();
-		
-		ois.close();
-		is.close();
 		
 		socket.close();
 	}
