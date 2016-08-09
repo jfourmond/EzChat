@@ -18,9 +18,12 @@ public class DialogThread extends Thread {
 	private OutputStream os;
 	private ObjectOutputStream oos;
 	
+	private boolean connected;
+	
 	//	CONSTRUCTEURS
 	public DialogThread(Socket socket) {
 		this.socket = socket;
+		this.connected = true;
 	}
 	
 	//	GETTERS
@@ -48,7 +51,6 @@ public class DialogThread extends Thread {
 	//	METHODES
 	@Override
 	public void run() {
-		
 		try {
 			InputStream is = socket.getInputStream();
 			ObjectInputStream ois = new ObjectInputStream(is);
@@ -56,13 +58,19 @@ public class DialogThread extends Thread {
 			os = socket.getOutputStream();
 			oos = new ObjectOutputStream(os);
 			
-			Message M = (Message)ois.readObject();
+			Message M;
 			
-			if (M != null ) {
-				ServerLog.info("Réception d'un message");
-				System.out.println(M);
-				oos.writeObject(M);
-			} else System.out.println((String)ois.readObject());
+			while(connected) {
+				M = (Message)ois.readObject();
+				
+				if (M != null ) {
+					ServerLog.info("Réception d'un message");
+					System.out.println(M);
+					
+					// Envoi du message au client
+					oos.writeObject(M);
+				} else System.out.println((String)ois.readObject());
+			}
 			
 			ois.close();
 			is.close();

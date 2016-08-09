@@ -3,8 +3,12 @@ package server;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server {
+	private static List<DialogThread> sockets;
+	
 	private static int port = 7030;
 	
 	private static boolean launch;
@@ -15,12 +19,16 @@ public class Server {
 		
 		launch = true;
 		
+		sockets = new ArrayList<>();
+		
 		ServerSocket server = new ServerSocket(port);
 		
 		while(launch) {	// TODO stopper la boucle
 			Socket socket = server.accept();
 			DialogThread dt = new DialogThread(socket);
 			dt.start();
+			
+			sockets.add(dt);
 		}
 		
 		server.close();

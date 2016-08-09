@@ -6,6 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import com.jfoenix.controls.*?>
+
 <GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="client.CommunicationController"  
 	alignment="center" hgap="10" vgap="10">
 	
@@ -15,7 +17,7 @@
 
 	<TextArea fx:id="message_list" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" editable="false" />
 
-	<TextField fx:id="messageField" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3"/>
+	<JFXTextField fx:id="messageField" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="3"/>
 
 	<Button text="Send" onAction="#send" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
 

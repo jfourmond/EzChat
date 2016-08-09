@@ -2,10 +2,11 @@ package client;
 
 import java.io.IOException;
 
+import com.jfoenix.controls.JFXTextField;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -14,7 +15,7 @@ public class CommunicationController {
 	private Client client;
 	
 	@FXML private TextArea message_list;
-	@FXML private TextField messageField;
+	@FXML private JFXTextField messageField;
 	@FXML private Text info;
 	
 	//	GETTERS
