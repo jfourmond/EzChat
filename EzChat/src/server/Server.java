@@ -6,18 +6,29 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.DAOFactory;
+import dao.UserDAO;
+import dao.UserDAOImpl;
+import metier.User;
+
 public class Server {
 	private static List<DialogThread> sockets;
+	public static UserDAO userDAO;
 	
 	private static int port = 7030;
 	
-	private static boolean launch;
+	private static boolean launch = true;
 	
 	public static void main(String[] args) throws Exception {
 		InetAddress ad = InetAddress.getLocalHost();
 		ServerLog.info("Lancement du serveur : " + ad);
 		
-		launch = true;
+		userDAO = new UserDAOImpl(DAOFactory.getInstance());
+		
+		// Affichage des utilisateurs enregistrés dans la base de données
+		List<User> users = userDAO.getAllUsers();
+		for(User user : users)
+			System.out.println(user);
 		
 		sockets = new ArrayList<>();
 		
@@ -25,15 +36,17 @@ public class Server {
 		
 		while(launch) {	// TODO stopper la boucle
 			Socket socket = server.accept();
-			DialogThread dt = new DialogThread(socket);
-			dt.start();
-			
-			sockets.add(dt);
+			ServerLog.info("Nouvelle connexion d'un client");
+			ConnectionThread ct = new ConnectionThread(socket);
+			ct.start();
 		}
 		
 		server.close();
 		
 		ServerLog.info("Arrêt du serveur");
 	}
-
+	
+	public static void addDialog(DialogThread dt) {
+		sockets.add(dt);
+	}
 }

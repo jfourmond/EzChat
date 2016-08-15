@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import com.jfoenix.controls.*?>
+
+<GridPane fx:id="gridPane" alignment="CENTER" hgap="10" style="-fx-background-color: WHITE;" vgap="20" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ConnectionController">
+	<padding>
+		<Insets bottom="10" left="25" right="25" top="25" />
+	</padding>
+	
+	<children>
+		<!-- SERVER PANE -->
+		<JFXTextField fx:id="hostField" labelFloat="true" promptText="%key.host" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" />
+	
+		<JFXTextField fx:id="portField" labelFloat="true" promptText="%key.port" text="7030" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2"/>
+	
+		<Text fx:id="infoServer" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2" />
+		
+		<!-- USER LOGIN -->
+		<JFXTextField fx:id="userField" labelFloat="true" promptText="%key.username" GridPane.columnIndex="4" GridPane.rowIndex="0" GridPane.columnSpan="2" />
+		
+		<JFXPasswordField fx:id="passwordField" promptText="%key.password" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.columnSpan="2"/>
+		
+		<HBox fx:id="hbox" alignment="bottom_right" spacing="10" GridPane.columnIndex="5" GridPane.rowIndex="3">
+			<children>
+				<JFXButton fx:id="noAccountButton" alignment="CENTER" buttonType="RAISED" onAction="#noAccount" style="-fx-font-size: 14px; -fx-button-type: RAISED; -fx-background-color: rgb(77,102,204); -fx-text-fill: WHITE;" text="%key.no_account" textAlignment="CENTER" wrapText="true" />
+				<JFXButton fx:id="loginButton" alignment="CENTER" buttonType="RAISED" onAction="#logIn" style="-fx-font-size: 14px; -fx-button-type: RAISED; -fx-background-color: rgb(77,102,204); -fx-text-fill: WHITE;" text="%key.login" textAlignment="CENTER" wrapText="true" />
+			</children>
+		</HBox>
+		
+		<Text fx:id="infoLogin" GridPane.columnIndex="4" GridPane.rowIndex="4" GridPane.columnSpan="2" />
+	</children>
+
+	<stylesheets>
+		<URL value="@connection.css" />
+	</stylesheets>
+
+</GridPane>
+

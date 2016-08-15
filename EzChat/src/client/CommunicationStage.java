@@ -21,11 +21,11 @@ public class CommunicationStage extends Stage {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("communication_view.fxml"));
 		Parent root = (Parent)loader.load();
 		
+		Scene scene = new Scene(root, 600, 400);
+		
 		CommunicationController controller = (CommunicationController)loader.getController();
 		controller.setStage(this);
 		controller.setClient(this.client);
-		
-		Scene scene = new Scene(root, 600, 400);
 		
 		setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override

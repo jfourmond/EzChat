@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -7,8 +8,11 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import metier.Message;
+import metier.User;
 
 public class DialogThread extends Thread {
+	private User user;
+	
 	private Socket socket;
 	
 	private InputStream is;
@@ -20,43 +24,31 @@ public class DialogThread extends Thread {
 	private boolean connected;
 	
 	//	CONSTRUCTEURS
-	public DialogThread(Socket socket) {
+	public DialogThread(Socket socket, User user) throws IOException {
 		this.socket = socket;
 		this.connected = true;
+		
+		is = socket.getInputStream();
+		ois = new ObjectInputStream(is);
+		
+		os = socket.getOutputStream();
+		oos = new ObjectOutputStream(os);
 	}
 	
 	//	GETTERS
+	public User getUser() { return user; }
+	
 	public Socket getSocket() { return socket; }
 	
-	public InputStream getInputStream() { return is; }
-	
-	public ObjectInputStream getObjectInputStream() { return ois; }
-	
-	public OutputStream getOutputStream() { return os; }
-	
-	public ObjectOutputStream getOjectOutputStream() { return oos; }
-	
 	//	SETTERS
+	public void setUser(User user) { this.user = user; }
+	
 	public void setSocket(Socket socket) { this.socket = socket; }
-	
-	public void setInputStream(InputStream is) { this.is = is; }
-	
-	public void setObjectInputStream(ObjectInputStream ois) { this.ois = ois; }
-	
-	public void setOutputStream(OutputStream os) { this.os = os; }
-	
-	public void setObjectOutputStream(ObjectOutputStream oos) { this.oos = oos; }
 	
 	//	METHODES
 	@Override
 	public void run() {
 		try {
-			InputStream is = socket.getInputStream();
-			ObjectInputStream ois = new ObjectInputStream(is);
-			
-			os = socket.getOutputStream();
-			oos = new ObjectOutputStream(os);
-			
 			Message M;
 			
 			while(connected) {

@@ -1,35 +1,32 @@
 package client;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javafx.util.Pair;
 import metier.Message;
+import metier.NewUserDemand;
+import metier.User;
 
 public class Client {
-	private String user;
+	private User user;
 	private String host = "localhost";
 	private int port = 7030;
-	
-	private boolean connected;
 	
 	private Socket socket;
 	private OutputStream os;
 	private ObjectOutputStream oos;
 	
-	//	CONSTRUCTEURS
-	public Client(String user, String host, String port) throws UnknownHostException, IOException {
-		this.user = user;
-		this.host = host;
-		this.port = Integer.parseInt(port);
-		
-		connect();
-	}
+	private InputStream is;
+	private ObjectInputStream ois;
 	
-	public Client(String user, String host, int port) throws UnknownHostException, IOException {
-		this.user = user;
+	//	CONSTRUCTEURS
+	public Client(String host, int port) throws UnknownHostException, IOException {
 		this.host = host;
 		this.port = port;
 		
@@ -37,7 +34,7 @@ public class Client {
 	}
 	
 	//	GETTERS
-	public String getUser() { return user; }
+	public User getUser() { return user; }
 	
 	public String getHost() { return host; }
 	
@@ -45,10 +42,10 @@ public class Client {
 	
 	public Socket getSocket() { return socket; }
 	
-	public boolean isConnected() { return connected; }
+	public boolean isConnected() { return socket.isConnected(); }
 	
 	//	SETTERS
-	public void setUser(String user) { this.user = user; }
+	public void setUser(User user) { this.user = user; }
 	
 	public void setHost(String host) { this.host = host; }
 	
@@ -56,21 +53,45 @@ public class Client {
 	
 	public void setSocket(Socket socket) { this.socket = socket; }
 	
-	public void setConnected(boolean connected) { this.connected = connected; }
-	
 	//	METHODES
 	public void connect() throws UnknownHostException, IOException {
 		socket = new Socket(host, port);
 		os = socket.getOutputStream();
 		oos = new ObjectOutputStream(os);
 		
-		ClientLog.info("Connexion de " + user + " sur " + host + ":" + port + " réussie.");
+		is = socket.getInputStream();
+		ois = new ObjectInputStream(is);
 		
-		connected = true;
+		ClientLog.info("Connexion sur " + host + ":" + port + " réussie.");
+	}
+	
+	public void authentificate(String username, String password) throws Exception {
+		Pair<String, String> p = new Pair<String, String>(username, password);
+		// Envoi des identifiants
+		oos.writeObject(p);
+		// Lecture du resultat de l'authentification
+		User user = (User) ois.readObject();
+		
+		if(user != null)
+			setUser(user);
+		else {
+			disconnect();
+			throw new Exception("L'utilisateur n'existe pas.");
+		}
+		System.out.println(this.user);
+	}
+	
+	public void signIn(NewUserDemand demand) throws IOException, ClassNotFoundException {
+		// Envoi de la demande
+		oos.writeObject(demand);
+		
+		// Lecture du résultat de l'enregistrement
+		demand = (NewUserDemand) ois.readObject();
+		System.out.println(demand);
 	}
 	
 	public boolean send(String msg) {
-		Message M = new Message(user, msg);
+		Message M = new Message(user.getName(), msg);
 		
 		System.out.println(M);
 		
