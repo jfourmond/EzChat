@@ -11,8 +11,11 @@ import metier.Message;
 import metier.User;
 
 public class DialogThread extends Thread {
+<<<<<<< HEAD
 	private User user;
 	
+=======
+>>>>>>> branch 'master' of https://github.com/jfourmond/EzChat.git
 	private Socket socket;
 	
 	private InputStream is;
