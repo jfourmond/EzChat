@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class CommunicationStage extends Stage {
-	private final static String title = "EzChat - Login";
+	private final static String title = "EzChat - ";
 	
 	private Client client;
 	
@@ -40,7 +40,7 @@ public class CommunicationStage extends Stage {
 			}
 		});
 		
-		setTitle(title);
+		setTitle(title + client.getUser().getName());
 		setScene(scene);
 		show();
 		

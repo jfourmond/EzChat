@@ -18,12 +18,10 @@ public class DialogThread extends Thread {
 	
 	private ObjectOutputStream oos;
 	
-	private boolean connected;
-	
 	//	CONSTRUCTEURS
 	public DialogThread(Socket socket, User user, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
 		this.socket = socket;
-		this.connected = true;
+		this.user = user;
 		
 		this.ois = ois;
 		
@@ -47,15 +45,15 @@ public class DialogThread extends Thread {
 		try {
 			Message M;
 			
-			while(connected) {
+			while(true) {
 				M = (Message)ois.readObject();
 				
 				if (M != null ) {
 					ServerLog.info("Réception d'un message");
 					System.out.println(M);
 					
-					// Envoi du message au client
-					oos.writeObject(M);
+					// Envoi du message aux différents clients
+					new MessageManagement(M).start();
 				} else System.out.println((String)ois.readObject());
 			}
 		} catch(EOFException eofe) {
@@ -75,5 +73,9 @@ public class DialogThread extends Thread {
 			ServerLog.info("Déconnexion de l'" + user);
 			System.out.println("Utilisateurs connectés " + Server.countDialog());
 		}
+	}
+	
+	public void send(Message M) throws IOException {
+		oos.writeObject(M);
 	}
 }
