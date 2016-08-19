@@ -18,7 +18,7 @@
 	
 		<JFXTextField fx:id="messageField" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" focusTraversable="true"/>
 	
-		<Button onAction="#send" text="Send" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+		<JFXButton fx:id="sendButton" onAction="#send" text="%key.send" GridPane.columnIndex="3" GridPane.rowIndex="1" style="-fx-font-size: 14px; -fx-button-type: RAISED; -fx-background-color: rgb(77,102,204); -fx-text-fill: WHITE;"/>
 	
 		<Text fx:id="info" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 	</children>

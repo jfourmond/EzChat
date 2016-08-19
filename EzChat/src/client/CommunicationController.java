@@ -3,6 +3,7 @@ package client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
@@ -19,6 +20,7 @@ public class CommunicationController extends Thread {
 	@FXML private JFXTextArea messageList;
 	@FXML private JFXTextField messageField;
 	@FXML private Text info;
+	@FXML private JFXButton sendButton;
 
 	private ObjectInputStream ois;
 	
@@ -33,6 +35,11 @@ public class CommunicationController extends Thread {
 	public void setClient(Client client) { this.client = client; }
 	
 	//	METHODES
+	@FXML protected void initialize() {
+		sendButton.setDefaultButton(true);
+	}
+	
+	
 	@FXML
 	protected void send(ActionEvent event) throws IOException {
 		ClientLog.info("Envoi d'un message");
