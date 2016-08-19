@@ -59,7 +59,7 @@ public class DialogThread extends Thread {
 				} else System.out.println((String)ois.readObject());
 			}
 		} catch(EOFException eofe) {
-			
+			// Normal... normalement
 		} catch(Exception E) {
 			E.printStackTrace();
 		} finally {
@@ -72,6 +72,7 @@ public class DialogThread extends Thread {
 				e.printStackTrace();
 			}
 			Server.removeDialog(this);
+			ServerLog.info("Déconnexion de l'" + user);
 			System.out.println("Utilisateurs connectés " + Server.countDialog());
 		}
 	}
