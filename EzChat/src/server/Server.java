@@ -49,4 +49,12 @@ public class Server {
 	public static void addDialog(DialogThread dt) {
 		sockets.add(dt);
 	}
+	
+	public static void removeDialog(DialogThread dt) {
+		sockets.remove(dt);
+	}
+	
+	public static int countDialog() {
+		return sockets.size();
+	}
 }

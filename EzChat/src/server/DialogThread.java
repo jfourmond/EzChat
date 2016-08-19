@@ -1,5 +1,6 @@
 package server;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -42,6 +43,7 @@ public class DialogThread extends Thread {
 	//	METHODES
 	@Override
 	public void run() {
+		System.out.println("Utilisateurs connectés " + Server.countDialog());
 		try {
 			Message M;
 			
@@ -56,6 +58,8 @@ public class DialogThread extends Thread {
 					oos.writeObject(M);
 				} else System.out.println((String)ois.readObject());
 			}
+		} catch(EOFException eofe) {
+			
 		} catch(Exception E) {
 			E.printStackTrace();
 		} finally {
@@ -67,6 +71,8 @@ public class DialogThread extends Thread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			Server.removeDialog(this);
+			System.out.println("Utilisateurs connectés " + Server.countDialog());
 		}
 	}
 }
