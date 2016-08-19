@@ -1,10 +1,8 @@
 package server;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 
 import metier.Message;
@@ -15,24 +13,20 @@ public class DialogThread extends Thread {
 	
 	private Socket socket;
 	
-	private InputStream is;
 	private ObjectInputStream ois;
 	
-	private OutputStream os;
 	private ObjectOutputStream oos;
 	
 	private boolean connected;
 	
 	//	CONSTRUCTEURS
-	public DialogThread(Socket socket, User user) throws IOException {
+	public DialogThread(Socket socket, User user, ObjectInputStream ois, ObjectOutputStream oos) throws IOException {
 		this.socket = socket;
 		this.connected = true;
 		
-		is = socket.getInputStream();
-		ois = new ObjectInputStream(is);
+		this.ois = ois;
 		
-		os = socket.getOutputStream();
-		oos = new ObjectOutputStream(os);
+		this.oos = oos;
 	}
 	
 	//	GETTERS
@@ -62,16 +56,17 @@ public class DialogThread extends Thread {
 					oos.writeObject(M);
 				} else System.out.println((String)ois.readObject());
 			}
-			
-			ois.close();
-			is.close();
-			
-			oos.close();
-			os.close();
-			
-			socket.close();
 		} catch(Exception E) {
 			E.printStackTrace();
+		} finally {
+			try {
+				ois.close();
+				oos.close();
+				socket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

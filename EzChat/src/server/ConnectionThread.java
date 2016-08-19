@@ -71,8 +71,10 @@ public class ConnectionThread extends Thread {
 		oos.writeObject(user);
 		// Connexion au dialogue
 		if(user != null) {
-			DialogThread dt = new DialogThread(socket, user);
+			ServerLog.info("Authentification réussie de l'" + user);
+			DialogThread dt = new DialogThread(socket, user, ois, oos);
 			dt.start();
+			Server.addDialog(dt);
 		} else
 			throw new AuthentificationException("Utilisateur invalide");
 	}

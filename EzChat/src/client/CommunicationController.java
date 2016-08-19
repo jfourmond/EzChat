@@ -1,7 +1,6 @@
 package client;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 import com.jfoenix.controls.JFXTextArea;
@@ -20,6 +19,8 @@ public class CommunicationController extends Thread {
 	@FXML private JFXTextArea messageList;
 	@FXML private JFXTextField messageField;
 	@FXML private Text info;
+
+	private ObjectInputStream ois;
 	
 	//	GETTERS
 	public Stage getStage() { return stage; }
@@ -33,11 +34,6 @@ public class CommunicationController extends Thread {
 	
 	//	METHODES
 	@FXML
-	private void initialize() {
-		start();
-	}
-	
-	@FXML
 	protected void send(ActionEvent event) throws IOException {
 		ClientLog.info("Envoi d'un message");
 		boolean b = client.send(messageField.getText());
@@ -48,27 +44,20 @@ public class CommunicationController extends Thread {
 	
 	@Override
 	public void run() {
-		InputStream is;
-		ObjectInputStream ois;
-		
 		try {
-			is = client.getSocket().getInputStream();
-			ois = new ObjectInputStream(is);
+			ois = client.getObjectInputStream();
 			
 			Message M;
 			
-			while(client.isConnected()) {
-					M = (Message)ois.readObject();
-					
-					if (M != null ) append(M);
-					else
-						System.out.println((String)ois.readObject());
+			while(true) {
+				M = (Message) ois.readObject();
+				
+				if (M != null ) append(M);
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (Exception e) { ClientLog.warning(e.getMessage()); }
 	}
+	
+	public void disconnect() throws IOException { ois.close(); }
 	
 	private void append(Message M) {
 		messageList.appendText(M.getUser() + " > " + M.getText() + "\n");

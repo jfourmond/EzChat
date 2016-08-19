@@ -44,6 +44,14 @@ public class Client {
 	
 	public boolean isConnected() { return socket.isConnected(); }
 	
+	public InputStream getInputStream() { return is; }
+	
+	public ObjectInputStream getObjectInputStream() { return ois; }
+	
+	public OutputStream getOutputStream() { return os; }
+	
+	public ObjectOutputStream getObjectOutputStream() { return oos; }
+	
 	//	SETTERS
 	public void setUser(User user) { this.user = user; }
 	
