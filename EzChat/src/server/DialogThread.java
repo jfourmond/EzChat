@@ -42,6 +42,8 @@ public class DialogThread extends Thread {
 	//	METHODES
 	@Override
 	public void run() {
+		Server.userDAO.updateLastConnexion(user.getId());
+		
 		System.out.println("Utilisateurs connectés " + Server.countDialog());
 		try {
 			Message M = null;
@@ -60,8 +62,6 @@ public class DialogThread extends Thread {
 					treatCommand(C);
 				} else
 					ServerLog.warning("Réception d'un objet inconnu");
-				
-				
 			}
 		} catch(EOFException eofe) {
 			// Normal... normalement

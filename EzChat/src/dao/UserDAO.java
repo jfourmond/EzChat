@@ -12,9 +12,11 @@ public interface UserDAO {
 	
 	User findByID(int id) throws DAOException;
 	
-	User find(String username, String password);
+	User find(String username, String password) throws DAOException;
 	
-	void incrementCountMessage(int id);
+	void incrementCountMessage(int id) throws DAOException;
+	
+	void updateLastConnexion(int id) throws DAOException;
 	
 	List<User> getAllUsers() throws DAOException;
 	

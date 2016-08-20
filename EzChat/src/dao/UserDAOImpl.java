@@ -22,6 +22,7 @@ public class UserDAOImpl implements UserDAO {
 	private static final String USERNAME = "username";
 	private static final String PASSWORD = "password";
 	private static final String INSCRIPTION_DATE = "inscription_date";
+	private static final String LAST_CONNEXION = "last_connexion";
 	private static final String LAST_MESSAGE = "last_message";
 	private static final String COUNT_MESSAGE = "count_message";
 	
@@ -46,6 +47,10 @@ public class UserDAOImpl implements UserDAO {
 											COUNT_MESSAGE + " = " + COUNT_MESSAGE + " + 1 ," +
 											LAST_MESSAGE + " = NOW() " +
 											"WHERE " + ID + " = ?";
+	
+	private static final String UPDATE_LAST_CONNEXION = "UPDATE " + TABLE + " SET " +
+														LAST_CONNEXION + " = NOW() " +
+														"WHERE " + ID + " = ?";
 	
 	private static final String DELETE = "DELETE FROM " + TABLE + " WHERE " + ID + " = ? ";
 	
@@ -99,7 +104,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void incrementCountMessage(int id) {
+	public void incrementCountMessage(int id) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet values = null;
@@ -110,6 +115,25 @@ public class UserDAOImpl implements UserDAO {
 			int status = preparedStatement.executeUpdate();
 			if(status == 0)
 				throw new DAOException("Échec de l'incrémentation du compte de message de l'utilisateur, aucune ligne éditée dans la table.");
+		} catch (SQLException E) {
+			throw new DAOException(E);
+		} finally {
+			silentCloses(values, preparedStatement, connection);
+		}
+	}
+	
+	@Override
+	public void updateLastConnexion(int id) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet values = null;
+		
+		try {
+			connection = daoFactory.getConnection();
+			preparedStatement = initialisationPreparedRequest(connection, UPDATE_LAST_CONNEXION, false, id);
+			int status = preparedStatement.executeUpdate();
+			if(status == 0)
+				throw new DAOException("Échec de la mise à jour de la date de dernière connexion de l'utilisateur, aucune ligne éditée dans la table.");
 		} catch (SQLException E) {
 			throw new DAOException(E);
 		} finally {
@@ -140,7 +164,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User find(String username, String password) {
+	public User find(String username, String password) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -234,6 +258,7 @@ public class UserDAOImpl implements UserDAO {
 		user.setName(resultSet.getString(USERNAME));
 		user.setPassword(resultSet.getString(PASSWORD));
 		user.setInscriptionDate(resultSet.getDate(INSCRIPTION_DATE));
+		user.setLastConnexion(resultSet.getDate(LAST_CONNEXION));
 		user.setLastMessage(resultSet.getDate(LAST_MESSAGE));
 		user.setCountMessage(resultSet.getInt(COUNT_MESSAGE));
 		return user;

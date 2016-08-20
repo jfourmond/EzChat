@@ -11,6 +11,7 @@ public class User implements Serializable {
 	private String password;	// TODO Penser à crypter le mdp
 	
 	private Date inscriptionDate;
+	private Date lastConnexion;
 	
 	private int countMessage;
 	private Date lastMessage;
@@ -39,6 +40,8 @@ public class User implements Serializable {
 	
 	public Date getInscriptionDate() { return inscriptionDate; }
 	
+	public Date getLastConnexion() { return lastConnexion; }
+	
 	public Date getLastMessage() { return lastMessage; }
 	
 	//	SETTERS
@@ -52,6 +55,8 @@ public class User implements Serializable {
 	
 	public void setInscriptionDate(Date inscriptionDate) { this.inscriptionDate = inscriptionDate; }
 	
+	public void setLastConnexion(Date lastConnexion) { this.lastConnexion = lastConnexion; }
+	
 	public void setLastMessage(Date lastMessage) { this.lastMessage = lastMessage; }
 	
 	//	METHODES
@@ -64,6 +69,7 @@ public class User implements Serializable {
 		ch += "\tNom : " + name + "\n";
 		ch += "\tPassword : " + password + "\n";
 		ch += "\tDate d'inscription : " + inscriptionDate + "\n";
+		ch += "\tDernière connexion : " + lastConnexion + "\n";
 		ch += "\tDate du dernier message : " + lastMessage + "\n";
 		ch += "\t" + countMessage + " messages envoyés\n";
 		return ch;
