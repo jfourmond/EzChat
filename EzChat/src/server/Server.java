@@ -36,7 +36,7 @@ public class Server {
 		
 		while(launch) {	// TODO stopper la boucle
 			Socket socket = server.accept();
-			ServerLog.info("Nouvelle connexion d'un client");
+			ServerLog.info("Nouveau contact d'un client");
 			ConnectionThread ct = new ConnectionThread(socket);
 			ct.start();
 		}

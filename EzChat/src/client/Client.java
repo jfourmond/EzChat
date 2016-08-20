@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import javafx.util.Pair;
+import metier.Command;
 import metier.Message;
 import metier.NewUserDemand;
 import metier.User;
@@ -98,13 +99,21 @@ public class Client {
 		System.out.println(demand);
 	}
 	
-	public boolean send(String msg) {
-		Message M = new Message(user.getName(), msg);
-		
-		System.out.println(M);
-		
+	public boolean sendMessage(String message) {
+		Message M = new Message(user.getName(), message);
 		try {
 			oos.writeObject(M);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean sendCommand(String command) {
+		Command C = new Command(command);
+		try {
+			oos.writeObject(C);
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();

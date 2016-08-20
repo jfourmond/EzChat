@@ -8,8 +8,7 @@ public class User implements Serializable {
 	private int id;
 	private String name;
 	private String password;	// TODO Penser à crypter le mdp
-	
-	// TODO stats
+	private int countMessage;
 	
 	//	CONSTRUCTEURS
 	public User() { }
@@ -17,6 +16,7 @@ public class User implements Serializable {
 	public User(String name, String password) {
 		this.name = name;
 		this.password = password;
+		this.countMessage = 0;
 	}
 	
 	public User(User user) {
@@ -30,12 +30,16 @@ public class User implements Serializable {
 	
 	public String getPassword() { return password; }
 	
+	public int getCountMessage() { return countMessage; }
+	
 	//	SETTERS
 	public void setId(int id) { this.id = id; }
 	
 	public void setName(String name) { this.name = name; }
 	
 	public void setPassword(String password) { this.password = password; }
+	
+	public void setCountMessage(int countMessage) { this.countMessage = countMessage; }
 	
 	//	METHODES
 	public void setUser(User user) { this.name = user.name; }
@@ -46,6 +50,7 @@ public class User implements Serializable {
 		ch += "\tID : " + id + "\n";
 		ch += "\tNom : " + name + "\n";
 		ch += "\tPassword : " + password + "\n";
+		ch += "\t" + countMessage + " messages envoyés\n";
 		return ch;
 	}
 }

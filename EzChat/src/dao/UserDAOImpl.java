@@ -21,11 +21,10 @@ public class UserDAOImpl implements UserDAO {
 	private static final String ID = "id";
 	private static final String USERNAME = "username";
 	private static final String PASSWORD = "password";
+	private static final String COUNT_MESSAGE = "count_message";
 	
-	private static final String SELECT_BY_ID = "SELECT " + ID + ", " +
-												USERNAME + ", " +
-												PASSWORD + ", " +
-												"FROM " + TABLE + " WHERE " +  ID + " = ? ";
+	private static final String SELECT_BY_ID = "SELECT * FROM " + TABLE +
+												" WHERE " +  ID + " = ? ";
 
 	private static final String SELECT_BY_NAME_AND_PWD = "SELECT * FROM " + TABLE +
 															" WHERE " + USERNAME + " = ? AND " +
@@ -40,6 +39,10 @@ public class UserDAOImpl implements UserDAO {
 	private static final String UPDATE = "UPDATE " + TABLE + " SET " +
 											USERNAME + " = ?, " +
 											PASSWORD + " = ? WHERE " + ID + " = ?";
+	
+	private static final String INCREMENT = "UPDATE " + TABLE + " SET " + 
+											COUNT_MESSAGE + " = " + COUNT_MESSAGE + " + 1 " + 
+											"WHERE " + ID + " = ?";
 	
 	private static final String DELETE = "DELETE FROM " + TABLE + " WHERE " + ID + " = ? ";
 	
@@ -74,7 +77,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void update(String id, User user) throws DAOException {
+	public void update(int id, User user) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet values = null;
@@ -93,7 +96,26 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User findByID(String id) throws DAOException {
+	public void incrementCountMessage(int id) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet values = null;
+		
+		try {
+			connection = daoFactory.getConnection();
+			preparedStatement = initialisationPreparedRequest(connection, INCREMENT, false, id);
+			int status = preparedStatement.executeUpdate();
+			if(status == 0)
+				throw new DAOException("Échec de l'incrémentation du compte de message de l'utilisateur, aucune ligne éditée dans la table.");
+		} catch (SQLException E) {
+			throw new DAOException(E);
+		} finally {
+			silentCloses(values, preparedStatement, connection);
+		}
+	}
+	
+	@Override
+	public User findByID(int id) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -162,7 +184,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void deleteByID(String id) throws DAOException {
+	public void deleteByID(int id) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet values = null;
@@ -208,7 +230,7 @@ public class UserDAOImpl implements UserDAO {
 		user.setId(resultSet.getInt(ID));
 		user.setName(resultSet.getString(USERNAME));
 		user.setPassword(resultSet.getString(PASSWORD));
+		user.setCountMessage(resultSet.getInt(COUNT_MESSAGE));
 		return user;
 	}
-
 }

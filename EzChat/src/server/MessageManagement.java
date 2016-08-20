@@ -15,7 +15,7 @@ public class MessageManagement extends Thread {
 	public void run() {
 		for(DialogThread dt : Server.getSockets()) {
 			try {
-				dt.send(message);
+				dt.sendMessage(message);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

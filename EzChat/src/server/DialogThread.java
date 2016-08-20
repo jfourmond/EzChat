@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import metier.Command;
 import metier.Message;
 import metier.User;
 
@@ -43,18 +44,24 @@ public class DialogThread extends Thread {
 	public void run() {
 		System.out.println("Utilisateurs connectés " + Server.countDialog());
 		try {
-			Message M;
+			Message M = null;
+			Command C = null;
 			
 			while(true) {
-				M = (Message)ois.readObject();
+				Object O = ois.readObject();
 				
-				if (M != null ) {
-					ServerLog.info("Réception d'un message");
-					System.out.println(M);
-					
-					// Envoi du message aux différents clients
-					new MessageManagement(M).start();
-				} else System.out.println((String)ois.readObject());
+				if(O instanceof Message) {
+					// Dans le cas d'un message
+					M = (Message) O;
+					treatMessage(M);
+				} else if(O instanceof Command) {
+					// Dans le cas d'une commande
+					C = (Command) O;
+					treatCommand(C);
+				} else
+					ServerLog.warning("Réception d'un objet inconnu");
+				
+				
 			}
 		} catch(EOFException eofe) {
 			// Normal... normalement
@@ -75,7 +82,31 @@ public class DialogThread extends Thread {
 		}
 	}
 	
-	public void send(Message M) throws IOException {
-		oos.writeObject(M);
+	public void sendMessage(Message M) throws IOException { oos.writeObject(M); }
+	
+	public void sendCommand(Command C) throws IOException { oos.writeObject(C); }
+	
+	private void treatMessage(Message M) throws ClassNotFoundException, IOException {
+		Server.userDAO.incrementCountMessage(user.getId());
+		
+		if (M != null ) {
+			ServerLog.info("Réception d'un message");
+			// Envoi du message aux différents clients
+			new MessageManagement(M).start();
+		} else System.err.println("Message vide !");
+	}
+	
+	private void treatCommand(Command C) throws IOException {
+		user = Server.userDAO.findByID(user.getId());
+		
+		if(C != null) {
+			ServerLog.info("Réception d'une commande");
+			// Traitement de la commande
+			if(C.getCommand().equals("stats")) {
+				String result = "Nombre de messages : " + user.getCountMessage();
+				C.setResult(result);
+				sendCommand(C);
+			}
+		} else System.err.println("Commande console vide !");
 	}
 }
