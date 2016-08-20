@@ -1,6 +1,7 @@
 package metier;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -8,7 +9,11 @@ public class User implements Serializable {
 	private int id;
 	private String name;
 	private String password;	// TODO Penser à crypter le mdp
+	
+	private Date inscriptionDate;
+	
 	private int countMessage;
+	private Date lastMessage;
 	
 	//	CONSTRUCTEURS
 	public User() { }
@@ -32,6 +37,10 @@ public class User implements Serializable {
 	
 	public int getCountMessage() { return countMessage; }
 	
+	public Date getInscriptionDate() { return inscriptionDate; }
+	
+	public Date getLastMessage() { return lastMessage; }
+	
 	//	SETTERS
 	public void setId(int id) { this.id = id; }
 	
@@ -40,6 +49,10 @@ public class User implements Serializable {
 	public void setPassword(String password) { this.password = password; }
 	
 	public void setCountMessage(int countMessage) { this.countMessage = countMessage; }
+	
+	public void setInscriptionDate(Date inscriptionDate) { this.inscriptionDate = inscriptionDate; }
+	
+	public void setLastMessage(Date lastMessage) { this.lastMessage = lastMessage; }
 	
 	//	METHODES
 	public void setUser(User user) { this.name = user.name; }
@@ -50,6 +63,8 @@ public class User implements Serializable {
 		ch += "\tID : " + id + "\n";
 		ch += "\tNom : " + name + "\n";
 		ch += "\tPassword : " + password + "\n";
+		ch += "\tDate d'inscription : " + inscriptionDate + "\n";
+		ch += "\tDate du dernier message : " + lastMessage + "\n";
 		ch += "\t" + countMessage + " messages envoyés\n";
 		return ch;
 	}

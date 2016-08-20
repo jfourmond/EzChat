@@ -21,6 +21,8 @@ public class UserDAOImpl implements UserDAO {
 	private static final String ID = "id";
 	private static final String USERNAME = "username";
 	private static final String PASSWORD = "password";
+	private static final String INSCRIPTION_DATE = "inscription_date";
+	private static final String LAST_MESSAGE = "last_message";
 	private static final String COUNT_MESSAGE = "count_message";
 	
 	private static final String SELECT_BY_ID = "SELECT * FROM " + TABLE +
@@ -41,7 +43,8 @@ public class UserDAOImpl implements UserDAO {
 											PASSWORD + " = ? WHERE " + ID + " = ?";
 	
 	private static final String INCREMENT = "UPDATE " + TABLE + " SET " + 
-											COUNT_MESSAGE + " = " + COUNT_MESSAGE + " + 1 " + 
+											COUNT_MESSAGE + " = " + COUNT_MESSAGE + " + 1 ," +
+											LAST_MESSAGE + " = NOW() " +
 											"WHERE " + ID + " = ?";
 	
 	private static final String DELETE = "DELETE FROM " + TABLE + " WHERE " + ID + " = ? ";
@@ -230,6 +233,8 @@ public class UserDAOImpl implements UserDAO {
 		user.setId(resultSet.getInt(ID));
 		user.setName(resultSet.getString(USERNAME));
 		user.setPassword(resultSet.getString(PASSWORD));
+		user.setInscriptionDate(resultSet.getDate(INSCRIPTION_DATE));
+		user.setLastMessage(resultSet.getDate(LAST_MESSAGE));
 		user.setCountMessage(resultSet.getInt(COUNT_MESSAGE));
 		return user;
 	}

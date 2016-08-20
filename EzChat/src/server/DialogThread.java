@@ -98,12 +98,17 @@ public class DialogThread extends Thread {
 	
 	private void treatCommand(Command C) throws IOException {
 		user = Server.userDAO.findByID(user.getId());
-		
+		String command;
 		if(C != null) {
 			ServerLog.info("Réception d'une commande");
+			command = C.getCommand();
 			// Traitement de la commande
-			if(C.getCommand().equals("stats")) {
+			if(command.equals("stats")) {
 				String result = "Nombre de messages : " + user.getCountMessage();
+				C.setResult(result);
+				sendCommand(C);
+			} else if(command.equals("user")) {
+				String result = user + "";
 				C.setResult(result);
 				sendCommand(C);
 			}
