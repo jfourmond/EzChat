@@ -1,7 +1,9 @@
 package client;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javafx.event.EventHandler;
@@ -15,6 +17,12 @@ public class CommunicationStage extends Stage {
 	private final static String title = "EzChat - ";
 	
 	private Client client;
+	
+	//	PROPERTIES
+	private static final String PROPERTIES_FILE		= "./client.properties";
+	private static final String PROPERTY_USERNAME = "username";
+	private static final String PROPERTY_HOST = "host";
+	private static final String PROPERTY_PORT = "port";
 	
 	//	CONSTRUCTEURS
 	public CommunicationStage(Client client) throws IOException {
@@ -38,6 +46,18 @@ public class CommunicationStage extends Stage {
 				ClientLog.info("Fermeture de l'interface de Communication");
 				try {
 					controller.disconnect();
+					
+					Properties properties = new Properties();
+					
+					FileOutputStream propertiesFile = new FileOutputStream(PROPERTIES_FILE);
+					
+					properties.setProperty(PROPERTY_USERNAME, client.getUser().getName());
+					properties.setProperty(PROPERTY_HOST, client.getHost());
+					properties.setProperty(PROPERTY_PORT, String.valueOf(client.getPort()));
+					
+					properties.store(propertiesFile, null);
+					
+					propertiesFile.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

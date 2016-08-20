@@ -1,5 +1,9 @@
 package client;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -40,6 +44,15 @@ public class ConnectionController {
 	private JFXPasswordField passwordConfirmationField;
 	
 	private Client client;
+	//	PROPERTIES
+	private static final String PROPERTIES_FILE		= "./client.properties";
+	private static final String PROPERTY_USERNAME = "username";
+		private String username;
+	private static final String PROPERTY_HOST = "host";
+		private String host;
+	private static final String PROPERTY_PORT = "port";
+		private String port;
+	
 	
 	//	GETTERS
 	public Stage getStage() { return stage; }
@@ -56,6 +69,30 @@ public class ConnectionController {
 	public void setClient(Client client) { this.client = client; }
 	
 	//	METHODES
+	@FXML
+	protected void initialize() {
+		Properties properties = new Properties();
+
+		FileInputStream propertiesFile = null;
+		
+		try {
+			propertiesFile = new FileInputStream(PROPERTIES_FILE);
+			properties.load(propertiesFile);
+			username = properties.getProperty(PROPERTY_USERNAME);
+			host = properties.getProperty(PROPERTY_HOST);
+			port = properties.getProperty(PROPERTY_PORT);
+			
+			propertiesFile.close();
+		} catch (IOException e) {
+			// e.printStackTrace();
+			ClientLog.warning("Impossible de charger le fichier de propriétés " + PROPERTIES_FILE);
+		}
+		
+		if(username != null) userField.setText(username);
+		if(host != null) hostField.setText(host);
+		if(port != null) portField.setText(port);
+	}
+	
 	@FXML
 	protected void logIn(ActionEvent event) {
 		String host = hostField.getText();
