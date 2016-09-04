@@ -15,7 +15,7 @@ public class NewUserDemand implements Serializable {
 	public NewUserDemand(String username, String password, String passwordConfirmation) {
 		exceptions = new ArrayList<>();
 		if(!password.equals(passwordConfirmation)) 
-			exceptions.add(new NewUserDemandException("Les mots de passes diffèrent"));
+			exceptions.add(new NewUserDemandException("Les mots de passes sont diffèrents"));
 		else {
 			user = new User(username, password);
 		}
@@ -30,13 +30,9 @@ public class NewUserDemand implements Serializable {
 	public void setUser(User user) { this.user = user; }
 	
 	//	METHODES
-	public void addException(NewUserDemandException exception) {
-		exceptions.add(exception);
-	}
+	public void addException(NewUserDemandException exception) { exceptions.add(exception); }
 	
-	public boolean isExceptionEmpty() {
-		return exceptions.isEmpty();
-	}
+	public boolean isExceptionEmpty() { return exceptions.isEmpty(); }
 	
 	@Override
 	public String toString() {
