@@ -95,6 +95,8 @@ public class ConnectionController {
 	
 	@FXML
 	protected void logIn(ActionEvent event) {
+		infoServer.setText("");
+		
 		String host = hostField.getText();
 		String port = portField.getText();
 		
@@ -109,8 +111,6 @@ public class ConnectionController {
 		}
 		
 		ClientLog.info("Demande de connexion au serveur : " + host + " sur le port " + port);
-		
-		System.out.println(client.isConnected());
 		
 		String username = userField.getText();
 		String password = passwordField.getText();
@@ -129,6 +129,8 @@ public class ConnectionController {
 	
 	@FXML
 	protected void noAccount(ActionEvent event) {
+		infoServer.setText("");
+		
 		if(!showSignIn) {
 			passwordConfirmationField = new JFXPasswordField();
 			passwordConfirmationField.setPromptText("Confirmation mot de passe");
@@ -147,6 +149,8 @@ public class ConnectionController {
 	}
 	
 	protected void toLogInForm() {
+		infoServer.setText("");
+		
 		noAccountButton.setText("Non enregistré ?");
 		noAccountButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -171,6 +175,8 @@ public class ConnectionController {
 	protected class SignIn implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent arg0) {
+			infoServer.setText("");
+			
 			ClientLog.info("Demande de création d'utilisateur");
 			
 			String host = hostField.getText();

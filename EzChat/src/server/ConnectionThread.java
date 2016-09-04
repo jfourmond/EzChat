@@ -63,10 +63,18 @@ public class ConnectionThread extends Thread {
 	}
 	
 	public User getUser(Pair<String, String> p) throws NoSuchAlgorithmException {
-		byte[] salt = Security.getSalt();
+		// Récupération de l'utilisateur en fonction du nom d'utilisateur
+		User user = Server.userDAO.find(p.getKey());
+		if(user == null) return null;
+		// Récupération du sel
+		byte[] salt = user.getSalt();
 		String encryptedPassword = Security.encryptPassword(p.getValue(), salt);
-		User user = Server.userDAO.find(p.getKey(), encryptedPassword);
-		return user;
+		System.out.println(encryptedPassword + " =?= " + user.getPassword());
+		// Si le mot de passe correspond
+		if(encryptedPassword.equals(user.getPassword())) {
+			return user;
+		// Sinon
+		} else return null;
 	}
 	
 	public void treatAuthentification(Pair<String, String> pair, User user) throws IOException, AuthentificationException, NoSuchAlgorithmException {
@@ -90,9 +98,8 @@ public class ConnectionThread extends Thread {
 		if(demand.isExceptionEmpty()) {
 			// Crypatage du mot de passe de l'utilisateur
 			byte[] salt = Security.getSalt();
-			System.out.println("Mot de passe : " + user.getPassword());
+			user.setSalt(salt);
 			user.setPassword(Security.encryptPassword(user.getPassword(), salt));
-			System.out.println("Mot de passe crypté : " + user.getPassword());
 			try {
 				// Ajout de l'utilisateur de la base
 				Server.userDAO.create(user);

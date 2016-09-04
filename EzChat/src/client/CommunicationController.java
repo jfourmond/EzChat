@@ -86,7 +86,7 @@ public class CommunicationController extends Thread {
 	public void disconnect() throws IOException { ois.close(); }
 	
 	private void append(Message M) {
-		messageList.appendText(M.getUser() + " > " + M.getText() + "\n");
+		messageList.appendText(M.getDate() + " - " + M.getUser() + " > " + M.getText() + "\n");
 	}
 	
 	private void append(Command C) {
