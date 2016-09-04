@@ -121,6 +121,9 @@ public class ConnectionController {
 			stage.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+			ClientLog.severe("Erreur de connexion : " + e.getMessage());
+			infoServer.setText("Utilisateur inconnu");
+			return;
 		}
 	}
 	

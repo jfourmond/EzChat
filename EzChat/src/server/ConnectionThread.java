@@ -6,11 +6,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
 
 import dao.DAOException;
 import javafx.util.Pair;
 import metier.NewUserDemand;
 import metier.NewUserDemandException;
+import metier.Security;
 import metier.User;
 
 public class ConnectionThread extends Thread {
@@ -34,6 +36,7 @@ public class ConnectionThread extends Thread {
 	}
 	
 	//	METHODES
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		// Authentification ou enregistrement
@@ -59,12 +62,14 @@ public class ConnectionThread extends Thread {
 		}
 	}
 	
-	public User getUser(Pair<String, String> p) {
-		User user = Server.userDAO.find(p.getKey(), p.getValue());
+	public User getUser(Pair<String, String> p) throws NoSuchAlgorithmException {
+		byte[] salt = Security.getSalt();
+		String encryptedPassword = Security.encryptPassword(p.getValue(), salt);
+		User user = Server.userDAO.find(p.getKey(), encryptedPassword);
 		return user;
 	}
 	
-	public void treatAuthentification(Pair<String, String> pair, User user) throws IOException, AuthentificationException {
+	public void treatAuthentification(Pair<String, String> pair, User user) throws IOException, AuthentificationException, NoSuchAlgorithmException {
 		// Récupération des informations de l'utilisateur
 		user = getUser(pair);
 		// Renvoi au client des informations de l'utilisateur
@@ -83,6 +88,11 @@ public class ConnectionThread extends Thread {
 		// Récupération de la demande
 		user = demand.getUser();
 		if(demand.isExceptionEmpty()) {
+			// Crypatage du mot de passe de l'utilisateur
+			byte[] salt = Security.getSalt();
+			System.out.println("Mot de passe : " + user.getPassword());
+			user.setPassword(Security.encryptPassword(user.getPassword(), salt));
+			System.out.println("Mot de passe crypté : " + user.getPassword());
 			try {
 				// Ajout de l'utilisateur de la base
 				Server.userDAO.create(user);
