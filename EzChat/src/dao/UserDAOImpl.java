@@ -21,6 +21,7 @@ public class UserDAOImpl implements UserDAO {
 	private static final String ID = "id";
 	private static final String USERNAME = "username";
 	private static final String PASSWORD = "password";
+	private static final String SALT = "salt";
 	private static final String INSCRIPTION_DATE = "inscription_date";
 	private static final String LAST_CONNEXION = "last_connexion";
 	private static final String LAST_MESSAGE = "last_message";
@@ -29,6 +30,9 @@ public class UserDAOImpl implements UserDAO {
 	private static final String SELECT_BY_ID = "SELECT * FROM " + TABLE +
 												" WHERE " +  ID + " = ? ";
 
+	private static final String SELECT_BY_NAME = "SELECT * FROM " + TABLE +
+												" WHERE " + USERNAME + " = ?";
+	
 	private static final String SELECT_BY_NAME_AND_PWD = "SELECT * FROM " + TABLE +
 															" WHERE " + USERNAME + " = ? AND " +
 															PASSWORD + " = ?";
@@ -37,7 +41,8 @@ public class UserDAOImpl implements UserDAO {
 	
 	private static final String INSERT = "INSERT INTO " + TABLE + " ( " + 
 											USERNAME + ", " +
-											PASSWORD + ") VALUES (?, ?)";
+											PASSWORD + ", " +
+											SALT + " ) VALUES (?, ?, ?)";
 	
 	private static final String UPDATE = "UPDATE " + TABLE + " SET " +
 											USERNAME + " = ?, " +
@@ -68,7 +73,7 @@ public class UserDAOImpl implements UserDAO {
 		
 		try {
 			connection = daoFactory.getConnection();
-			preparedStatement = initialisationPreparedRequest(connection, INSERT, true, user.getName(), user.getPassword());
+			preparedStatement = initialisationPreparedRequest(connection, INSERT, true, user.getName(), user.getPassword(), user.getSalt());
 			int status = preparedStatement.executeUpdate();
 			if(status == 0)
 				throw new DAOException("Échec de l'ajout de l'utilisateur, aucune ligne ajoutée dans la table.");
@@ -164,6 +169,28 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
+	public User find(String username) throws DAOException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		User user = null;
+		
+		try {
+			connection = daoFactory.getConnection();
+			preparedStatement = initialisationPreparedRequest(connection, SELECT_BY_NAME, false, username);
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				user = map(resultSet);
+			}
+		} catch(SQLException E) {
+			throw new DAOException(E);
+		} finally {
+			silentCloses(resultSet, preparedStatement, connection);
+		}
+		return user;
+	}
+	
+	@Override
 	public User find(String username, String password) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -257,6 +284,7 @@ public class UserDAOImpl implements UserDAO {
 		user.setId(resultSet.getInt(ID));
 		user.setName(resultSet.getString(USERNAME));
 		user.setPassword(resultSet.getString(PASSWORD));
+		user.setSalt(resultSet.getBytes(SALT));
 		user.setInscriptionDate(resultSet.getDate(INSCRIPTION_DATE));
 		user.setLastConnexion(resultSet.getDate(LAST_CONNEXION));
 		user.setLastMessage(resultSet.getDate(LAST_MESSAGE));

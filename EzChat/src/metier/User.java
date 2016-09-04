@@ -8,7 +8,8 @@ public class User implements Serializable {
 	
 	private int id;
 	private String name;
-	private String password;	// TODO Penser à crypter le mdp
+	private String password;
+	private byte[] salt;
 	
 	private Date inscriptionDate;
 	private Date lastConnexion;
@@ -36,6 +37,8 @@ public class User implements Serializable {
 	
 	public String getPassword() { return password; }
 	
+	public byte[] getSalt() { return salt; }
+	
 	public int getCountMessage() { return countMessage; }
 	
 	public Date getInscriptionDate() { return inscriptionDate; }
@@ -50,6 +53,8 @@ public class User implements Serializable {
 	public void setName(String name) { this.name = name; }
 	
 	public void setPassword(String password) { this.password = password; }
+	
+	public void setSalt(byte[] salt) { this.salt = salt; }
 	
 	public void setCountMessage(int countMessage) { this.countMessage = countMessage; }
 	
@@ -67,7 +72,8 @@ public class User implements Serializable {
 		String ch = "Utilisateur : \n";
 		ch += "\tID : " + id + "\n";
 		ch += "\tNom : " + name + "\n";
-		ch += "\tPassword : " + password + "\n";
+		ch += "\tMot de passe : " + password + "\n";
+		ch += "\tSel : " + salt + "\n";
 		ch += "\tDate d'inscription : " + inscriptionDate + "\n";
 		ch += "\tDernière connexion : " + lastConnexion + "\n";
 		ch += "\tDate du dernier message : " + lastMessage + "\n";

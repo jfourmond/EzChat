@@ -12,6 +12,8 @@ public interface UserDAO {
 	
 	User findByID(int id) throws DAOException;
 	
+	User find(String username) throws DAOException;
+	
 	User find(String username, String password) throws DAOException;
 	
 	void incrementCountMessage(int id) throws DAOException;
